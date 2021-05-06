@@ -1,0 +1,108 @@
+version: '3'
+
+services:
+  api_gateway_emulator:
+    build:
+      context: .
+      dockerfile: ./docker/images/api_gateway_emulator/Dockerfile.nginx
+    networks:
+      - webstorage
+    volumes:
+      - ./api_gateway_emulator/nginx:/etc/nginx/conf.d:cached
+      - ./api_gateway_emulator/scripts:/api_gateway_emulator/scripts:cached
+    ports:
+      - 60100:80
+    command: bash -c "/usr/sbin/nginx -g 'daemon off;'"
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - 60101:8000
+    user: root
+    volumes:
+      - dynamodb_data:/data
+    networks:
+      - webstorage
+    environment:
+      - AWS_ACCESS_KEY_ID=dynamodb_access_key_id
+      - AWS_SECRET_ACCESS_KEY=dynamodb_secret_access_key
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data
+  minio:
+    image: minio/minio:latest
+    ports:
+      - 60102:9000
+    environment:
+      - MINIO_ACCESS_KEY=minio_access_key
+      - MINIO_SECRET_KEY=minio_secret_key
+    volumes:
+      - ./docker/data/minio/data:/export
+      - ./docker/data/minio/config:/root/.minio
+    networks:
+      - webstorage
+    command: server /export
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio http://minio:9000 minio_access_key minio_secret_key) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/files;
+      /usr/bin/mc policy download myminio/files;
+      exit 0;
+      "
+    networks:
+      - webstorage
+
+  test: &lambda
+    container_name: test
+    build:
+      context: .
+      dockerfile: ./docker/images/lambda/Dockerfile
+    volumes:
+      - ./functions:/var/task:cached
+    networks:
+      - webstorage
+    env_file: .env
+    command: test.handler
+    tty: true
+  login:
+    <<: *lambda
+    container_name: login
+    command: login.handler
+  logout:
+    <<: *lambda
+    container_name: logout
+    command: logout.handler
+  upload_file:
+    <<: *lambda
+    container_name: upload_file
+    command: upload_file.handler
+  download_file:
+    <<: *lambda
+    container_name: download_file
+    command: download_file.handler
+  show_files:
+    <<: *lambda
+    container_name: show_files
+    command: show_files.handler
+  operate_files:
+    <<: *lambda
+    container_name: operate_files
+    command: operate_files.handler
+  authorization:
+    <<: *lambda
+    container_name: authorization
+    command: authorization.handler
+  oauth_google_callback:
+    <<: *lambda
+    container_name: oauth_google_callback
+    command: oauth_google_callback.handler
+
+
+volumes:
+  dynamodb_data:
+
+networks:
+  webstorage:
+    external: true
+

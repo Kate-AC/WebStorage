@@ -1,0 +1,6 @@
+.next
+node_modules
+bundle
+backend/docker/data/
+tsconfig.tsbuildinfo
+infra/.terraform/

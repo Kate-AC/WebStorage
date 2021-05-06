@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic 1`] = `
+<div
+  className="sc-hKgILt bDznOC"
+>
+  <div
+    className="sc-gsTCUz VSJQG"
+  >
+    <nav
+      className="uk-navbar-container uk-navbar"
+      uk-navbar="true"
+    >
+      <div
+        className="uk-navbar-left"
+      >
+        <a
+          className="uk-navbar-item uk-logo"
+          href="/"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          WebStorage
+        </a>
+      </div>
+      <div
+        className="uk-navbar-right"
+      >
+        <ul
+          className="uk-navbar-nav"
+        >
+          <li
+            className="sc-bdfBwQ iGqsPC"
+          >
+            <a
+              href="/login"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+            >
+              Login
+            </a>
+          </li>
+        </ul>
+        <div
+          className="uk-navbar-item"
+        />
+      </div>
+    </nav>
+  </div>
+  <main
+    className="uk-grid-collapse uk-child-width-expand@s"
+    onClick={[Function]}
+    uk-grid="true"
+  >
+    <div
+      className="uk-width-auto uk-padding-remove"
+    />
+    <div
+      className="uk-width-expand"
+    >
+      <div
+        className="uk-padding uk-padding-remove-vertical"
+      >
+        <div
+          className="sc-fubCfw"
+        >
+          <div
+            className="sc-iBPRYJ lmNEIV uk-flex uk-flex-wrap"
+            id="files-area"
+            onClick={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+          />
+          <div />
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+`;

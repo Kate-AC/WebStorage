@@ -1,0 +1,20 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/images/app/Dockerfile
+    ports:
+      - "60000:3000"
+    volumes:
+      - .:/project/app:cached
+    networks:
+      - webstorage
+    command: npm run dev:ts
+    tty: true
+    env_file: .env
+
+networks:
+  webstorage:
+    external: true
+
