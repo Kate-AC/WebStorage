@@ -10,6 +10,10 @@ class S3
   end
 
   def getClient
+    if env[:s3_endpoint].length == 0
+      return Aws::S3::Client.new
+    end
+
     Aws::S3::Client.new(
       credentials: getCredentials,
       region: env[:region],
@@ -19,6 +23,10 @@ class S3
   end
 
   def getResource
+    if env[:s3_endpoint].length == 0
+      return Aws::S3::Resource.new.bucket(env[:s3_bucket_name])
+    end
+
     Aws::S3::Resource.new(
       credentials: getCredentials,
       region: env[:region],
@@ -49,6 +57,16 @@ class S3
     presigner = Aws::S3::Presigner.new({
       client: getClient
     })
+
+    if env[:s3_endpoint].length == 0
+      return presigner.presigned_url(
+        :get_object,
+        bucket: env[:s3_bucket_name],
+        key: key,
+        expires_in: 300
+      )
+    end
+
     presigner.presigned_url(
       :get_object,
       bucket: env[:s3_bucket_name],

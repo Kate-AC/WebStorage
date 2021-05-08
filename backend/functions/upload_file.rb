@@ -7,6 +7,17 @@ require "files_db"
 require "authorizer"
 
 def handler(event:, context:)
+  if "OPTIONS" == event["httpMethod"]
+    return {
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
+  end
+
   authorizer = Authorizer.new(event["headers"])
   sessionId = authorizer.getSessionId
 
@@ -44,9 +55,15 @@ def handler(event:, context:)
     })
 
     uploadedFile = FilesDb.new.getByUserIdAndFileKey(googleId, body["fileKey"])
-    p uploadedFile
   end
 
-  { statusCode: 200, body: uploadedFile }
+  {
+    statusCode: 200,
+    body: uploadedFile.to_json,
+    headers: {
+      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Credentials": true
+    }
+  }
 end
 

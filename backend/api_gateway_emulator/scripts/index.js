@@ -53,7 +53,7 @@ function requestLambda(r) {
       }
     }
 
-    r.return(body.statusCode, JSON.stringify(responseBody));
+    r.return(body.statusCode, responseBody);
   })
   .catch((result) => {
     r.error("error");

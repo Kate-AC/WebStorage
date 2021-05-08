@@ -3,15 +3,10 @@ resource "aws_s3_bucket" "public" {
   acl    = "public-read"
 
   cors_rule {
-    allowed_origins = ["*"]
-    allowed_methods = ["GET", "POST", "PUT"]
+    allowed_origins = ["https://experiment-lab.link", "https://api.experiment-lab.link"]
+    allowed_methods = ["GET", "PUT"]
     allowed_headers = ["*"]
     max_age_seconds = 300
-  }
-
-  website {
-    index_document = "index.html"
-    error_document = "index.html"
   }
 
   tags = {
@@ -24,14 +19,12 @@ resource "aws_s3_bucket_policy" "public" {
   policy = data.aws_iam_policy_document.public.json
 }
 
+
 data "aws_iam_policy_document" "public" {
   statement {
     effect    = "Allow"
-    actions   = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.public.id}",
-      "arn:aws:s3:::${aws_s3_bucket.public.id}/*"
-    ]
+    actions   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:ListBucket"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.public.id}", "arn:aws:s3:::${aws_s3_bucket.public.id}/*"]
 
     principals {
       type        = "*"

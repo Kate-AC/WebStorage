@@ -6,7 +6,14 @@ def handler(event:, context:)
   sessionId = authorizer.getSessionId
 
   if authorizer.auth(sessionId)
-    return { statusCode: 200 }
+    return { 
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
   end
 
   { statusCode: 401 }

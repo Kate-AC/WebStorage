@@ -63,6 +63,67 @@ resource "aws_api_gateway_method" "current" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method_response" "current" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.current.http_method
+  status_code = "200"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers"     = true,
+    "method.response.header.Access-Control-Allow-Methods"     = true,
+    "method.response.header.Access-Control-Allow-Origin"      = true,
+    "method.response.header.Access-Control-Allow-Credentials" = true
+  }
+}
+
+resource "aws_api_gateway_method_response" "current_302" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.current.http_method
+  status_code = "302"
+
+  response_parameters = {
+    "method.response.header.Location" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "current_302" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.current.http_method
+  status_code = aws_api_gateway_method_response.current_302.status_code
+
+  selection_pattern = ".*\"status\":302.*"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Cookie'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE,PATCH'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'https://experiment-lab.link'",
+    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
+resource "aws_api_gateway_integration_response" "current" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.options.http_method
+  status_code = aws_api_gateway_method_response.current.status_code
+
+  selection_pattern = ".*\"status\":200.*"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Cookie'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE,PATCH'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'https://experiment-lab.link'",
+    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
 resource "aws_api_gateway_integration" "current" {
   rest_api_id             = var.rest_api_id
   resource_id             = aws_api_gateway_resource.current.id
@@ -91,6 +152,66 @@ resource "aws_api_gateway_integration" "current" {
 #  target_id = "${var.controller}_${var.method}"
 #  arn       = aws_lambda_function.current.arn
 #}
+
+resource "aws_api_gateway_method" "options" {
+  rest_api_id   = var.rest_api_id
+  resource_id   = aws_api_gateway_resource.current.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method_response" "options" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.options.http_method
+  status_code = "200"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true,
+    "method.response.header.Access-Control-Allow-Credentials" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "options" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.options.http_method
+  status_code = aws_api_gateway_method_response.options.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Cookie'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE,PATCH'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'https://experiment-lab.link'",
+    "method.response.header.Access-Control-Allow-Credentials" = "'true'"
+  }
+}
+
+resource "aws_api_gateway_integration" "options" {
+  rest_api_id = var.rest_api_id
+  resource_id = aws_api_gateway_resource.current.id
+  http_method = aws_api_gateway_method.options.http_method
+  type        = "MOCK"
+
+  request_templates = {
+    "application/json" = <<EOF
+{
+  "statusCode": 200,
+  "headers": {
+    "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Cookie",
+    "Access-Control-Allow-Origin": "https://experiment-lab.link",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET,OPTIONS,POST,PUT,DELETE,PATCH"
+  }
+}
+EOF
+  }
+}
 
 output lambda_function_resource_id {
   value = aws_api_gateway_resource.current.id

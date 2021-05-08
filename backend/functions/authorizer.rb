@@ -56,9 +56,11 @@ class Authorizer
   def getCookies()
     return [] if @headers.nil?
 
-    return [] unless @headers.has_key?("Cookie")
+    return @headers["cookie"].split(";") if @headers.has_key?("cookie")
 
-    @headers["Cookie"].split(";")
+    return @headers["Cookie"].split(";") if @headers.has_key?("Cookie")
+
+    []
   end
 end
 

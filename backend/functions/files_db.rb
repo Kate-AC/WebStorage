@@ -20,14 +20,6 @@ class FilesDb
         ":UserId": userId.to_s
       }
     )
-
-#    Dynamodb.new.getClient.query(
-#      table_name: "Files",
-#      key_condition_expression: "UserId = :UserId",
-#      espression_attribute_values: {
-#        ":UserId": userId.to_s
-#      }
-#    )
   end
 
   def getByUserIdAndFileKey(userId, fileKey)

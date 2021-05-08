@@ -12,7 +12,7 @@ services:
       - webstorage
     command: npm run dev:ts
     tty: true
-    env_file: .env
+    env_file: .env.local
 
 networks:
   webstorage:

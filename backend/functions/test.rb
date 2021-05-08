@@ -5,11 +5,25 @@ require "env"
 require "users_db"
 
 def handler(event:, context:)
+  if "OPTIONS" == event["httpMethod"]
+    return {
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Methods": "OPTIONS,POST",
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
+  end
+
   {
-    statusCode: 302,
+    statusCode: 200,
     body: "",
     headers: {
-      Location: "https://google.co.jp"
+      "Access-Control-Allow-Methods": "OPTIONS,POST",
+      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Credentials": true
     }
   }
 end

@@ -4,11 +4,25 @@ import { sortCreatedAtDesc } from 'utils/FileSorter';
 import { UploadedFile } from 'types/UploadedFile';
 import { AnalyzedFile } from 'types/AnalyzedFile';
 
+export function executeTest (): void {
+  axios.defaults.withCredentials = true;
+
+  axios
+    .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/test', {})
+    .then((response) => {
+      console.log(response);
+      console.log("OK");
+    })
+    .catch((response) => {
+      console.log("NG");
+    });
+}
+
 export function executeLogin (): void {
   axios.defaults.withCredentials = true;
 
   axios
-    .post('http://localhost:60100/login', {})
+    .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/login', {})
     .then((response) => {
       alertStore.dispatch({
         type: 'SUCCESS',
@@ -27,7 +41,7 @@ export function executeShowFiles (setFiles: (arg1: UploadedFile[]) => void) {
   axios.defaults.withCredentials = true;
 
   axios
-    .post('http://localhost:60100/show_files', {})
+    .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/show_files')
     .then((response) => {
       const sortedFiles: UploadedFile[] = sortCreatedAtDesc(response.data);
       setFiles(sortedFiles);
@@ -46,7 +60,7 @@ export function executeUploadFile (analyzedFile: AnalyzedFile, i: number): Promi
   return new Promise((resolve, reject) => {
     axios
       .post(
-        'http://localhost:60100/upload_file',
+        process.env.NEXT_PUBLIC_BACKEND_URL + '/upload_file',
         {
           contents: analyzedFile.dataSet[i],
           fileKey: analyzedFile.fileKey,
@@ -76,7 +90,7 @@ export function executeDownloadFile (fileKey: string): Promise<string> {
 
   return new Promise((resolve, reject) => {
     axios
-      .post('http://localhost:60100/download_file', {
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/download_file', {
         fileKey: fileKey,
       })
       .then((response) => {
@@ -96,7 +110,7 @@ export function executeOperateFiles (fileKeys: string[], order: string): Promise
 
   return new Promise((resolve, reject) => {
     axios
-      .post('http://localhost:60100/operate_files', {
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/operate_files', {
         fileKeys: fileKeys,
         order: order,
       })
@@ -117,8 +131,9 @@ export function executeAuthorization (): Promise<boolean> {
 
   return new Promise((resolve, reject) => {
     axios
-      .get('http://localhost:60100/authorization', {})
+      .get(process.env.NEXT_PUBLIC_BACKEND_URL + '/authorization', {})
       .then((response) => {
+        console.log(response.status);
         if (response.status !== 200) {
           alertStore.dispatch({
             type: 'INFO',
@@ -130,6 +145,7 @@ export function executeAuthorization (): Promise<boolean> {
         }
       })
       .catch((response) => {
+        console.log(response);
         alertStore.dispatch({
           type: 'INFO',
           message: 'INFO: Please login again.',

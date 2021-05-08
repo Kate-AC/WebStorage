@@ -50,8 +50,7 @@ def handler(event:, context:)
     statusCode: 302,
     body: "login",
     headers: {
-      "Location" => "#{env[:backend_url]}/login?session_id=#{sessionId}",
-      "Set-Cookie" => "#{sessionName}=#{sessionId};Path=\/;Expires=#{expiredTime};"
+      "Location" => "#{env[:backend_url]}/login?session_id=#{sessionId}"
     }
   }
 end

@@ -22,7 +22,7 @@ def handler(event:, context:)
     isBase64Encoded: false,
     body: "login",
     headers: {
-      "Set-Cookie" => "#{sessionName}=#{sessionId};Path=\/;Expires=#{expiredTime};",
+      "Set-Cookie" => "#{sessionName}=#{sessionId};Path=\/;Expires=#{expiredTime};Domain=experiment-lab.link;",
       "Location" => env[:login_to_redirect_url]
     }
   }

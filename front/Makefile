@@ -23,6 +23,10 @@ run:
 down:
 	docker-compose down
 
+.PHONY: deploy-s
+deploy-s:
+	AWS_PROFILE=kate npx serverless
+
 .PHONY: deploy
 deploy:
 	aws s3 sync out s3://public-production-filestorage/ --include "*" --acl public-read --cache-control "max-age=3600"

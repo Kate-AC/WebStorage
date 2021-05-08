@@ -3,6 +3,19 @@ require 's3'
 require "authorizer"
 
 def handler(event:, context:)
+  if "OPTIONS" == event["httpMethod"]
+    return {
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Content-Type": "application/octet-stream",
+        "Access-Control-Allow-Content-Disposition": "attachment;"
+      }
+    }
+  end
+
   authorizer = Authorizer.new(event["headers"])
   sessionId = authorizer.getSessionId
 
@@ -27,6 +40,8 @@ def handler(event:, context:)
     headers: {
       "Content-Type" => "application/octet-stream",
       "Content-Disposition" => "attachment;",
+      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Credentials": true
     },
     body: body
   }

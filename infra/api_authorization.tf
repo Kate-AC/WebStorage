@@ -2,7 +2,7 @@ module "authorization" {
   source           = "./api"
   controller       = "authorization"
   method           = "handler"
-  http_method      = "POST"
+  http_method      = "GET"
   role             = aws_iam_role.iam_for_lambda.arn
   env              = var.env
   policy           = aws_iam_role_policy_attachment.lambda_logs

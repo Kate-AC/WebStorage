@@ -4,6 +4,16 @@ require "files_db"
 require "authorizer"
 
 def handler(event:, context:)
+  if "OPTIONS" == event["httpMethod"]
+    return {
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
+  end
   authorizer = Authorizer.new(event["headers"])
   sessionId = authorizer.getSessionId
 
@@ -24,7 +34,15 @@ def handler(event:, context:)
       s3.deleteByKey(fileKey)
     end
   end
+  results = { fileKeys: fileKeys }
 
-  { statusCode: 200, body: { fileKeys: fileKeys } }
+  {
+    statusCode: 200,
+    body: results.to_json,
+    headers: {
+      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Credentials": true
+    }
+  }
 end
 

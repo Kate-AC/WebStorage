@@ -1,6 +1,8 @@
 import React from 'react';
 import { Layout as DefaultLayout } from 'components/layouts/default/Layout';
 
+import { executeTest } from 'utils/ApiClient';
+
 export default function Login (): React.ReactElement {
   const googleLoginUrl =
     'https://accounts.google.com/o/oauth2/auth?' +

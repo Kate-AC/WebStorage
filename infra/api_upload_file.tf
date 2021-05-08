@@ -1,6 +1,6 @@
-module "test" {
+module "upload_file" {
   source           = "./api"
-  controller       = "test"
+  controller       = "upload_file"
   method           = "handler"
   http_method      = "POST"
   role             = aws_iam_role.iam_for_lambda.arn
@@ -11,15 +11,4 @@ module "test" {
   rest_api_id      = aws_api_gateway_rest_api.current.id
   root_resource_id = aws_api_gateway_rest_api.current.root_resource_id
 }
-
-#resource "aws_api_gateway_method_response" "test" {
-#  rest_api_id = aws_api_gateway_rest_api.current.id
-#  resource_id = module.oauth_google_callback.lambda_function_resource_id
-#  http_method = "GET"
-#  status_code = 302
-
-#  response_parameters = {
-#    "method.response.header.Location" = true
-#  }
-#}
 

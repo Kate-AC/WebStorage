@@ -7,16 +7,40 @@ require "files_db"
 require "authorizer"
 
 def handler(event:, context:)
+  if "OPTIONS" == event["httpMethod"]
+    return {
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
+  end
+
   authorizer = Authorizer.new(event["headers"])
   sessionId = authorizer.getSessionId
 
   if !authorizer.auth(sessionId)
-    return { statusCode: 400 }
+    return {
+      statusCode: 400,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Credentials": true
+      }
+    }
   end
 
-  body = JSON.parse(event["body"])
-
   files  = FilesDb.new.getAllByUserId(authorizer.getAuthorizedUser["GoogleId"])
-  { statusCode: 200, body: files["items"] }
+
+  {
+    statusCode: 200,
+    body: files["items"].to_json,
+    headers: {
+      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Credentials": true
+    }
+  }
 end
 

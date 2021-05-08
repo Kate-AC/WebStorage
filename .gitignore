@@ -4,3 +4,7 @@ bundle
 backend/docker/data/
 tsconfig.tsbuildinfo
 infra/.terraform/
+infra/zip/
+front/out/
+front/.serverless
+front/.serverless_nextjs
