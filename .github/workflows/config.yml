@@ -1,7 +1,7 @@
 name: Test and deploy
 on: [push]
 jobs:
-  install:
+  check:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
@@ -12,19 +12,23 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '15'
+      - run: cd front
       - run: npm install
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
       - name: Check lint
         run: npm run lint
-
-  test:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
       - name: Run test
         run: npm run test
 
+  deploy:
+    runs-on: ubuntu
+    if: github.ref == 'refs/heads/feature/add-github-action'
+    steps:
+      - name: Check out Node.js
+        uses: actions/checkout@v2
+      - name: Select Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+      - run: cd front
+      - name: Start front deploy
+        run: npx serverless
