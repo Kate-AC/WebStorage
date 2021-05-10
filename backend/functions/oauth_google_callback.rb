@@ -30,8 +30,19 @@ def handler(event:, context:)
   users = UsersDb.new
   user = users.getByGoogleId(apiResults["user_id"])
 
-  sessionName, sessionId, expiredTime = Authorizer.createSession
-  originalSessionId, _ = Authorizer.parseSessionId(sessionId)
+  authorizer = Authorizer.new(event["headers"])
+  sessionId = authorizer.getSessionId
+  if sessionId.nil?
+    _, sessionId, _ = Authorizer.createSession
+    originalSessionId, _ = Authorizer.parseSessionId(sessionId)
+  else
+    originalSessionId, expiredTime = Authorizer.parseSessionId(sessionId)
+
+    if expiredTime < Time.now.to_i
+      _, sessionId, _ = Authorizer.createSession
+      originalSessionId, _ = Authorizer.parseSessionId(sessionId)
+    end
+  end
 
   if user.nil?
     users.create({
