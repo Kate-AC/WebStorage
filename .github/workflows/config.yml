@@ -6,6 +6,8 @@ jobs:
     env:
       NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
     steps:
+      - run: aws help
+      - run: hoge
       - name: Check out Node.js
         uses: actions/checkout@v2
       - name: Select Node.js
