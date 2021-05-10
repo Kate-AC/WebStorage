@@ -10,7 +10,7 @@ class Dynamodb
   end
 
   def getClient
-    if env[:dynamodb_endpoint].length == 0
+    if env[:dynamodb_endpoint].nil?
       return Aws::DynamoDB::Client.new
     end
 

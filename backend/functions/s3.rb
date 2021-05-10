@@ -10,7 +10,7 @@ class S3
   end
 
   def getClient
-    if env[:s3_endpoint].length == 0
+    if env[:s3_endpoint].nil?
       return Aws::S3::Client.new
     end
 
@@ -23,7 +23,7 @@ class S3
   end
 
   def getResource
-    if env[:s3_endpoint].length == 0
+    if env[:s3_endpoint].nil?
       return Aws::S3::Resource.new.bucket(env[:s3_bucket_name])
     end
 
@@ -58,7 +58,7 @@ class S3
       client: getClient
     })
 
-    if env[:s3_endpoint].length == 0
+    if env[:s3_endpoint].nil?
       return presigner.presigned_url(
         :get_object,
         bucket: env[:s3_bucket_name],
