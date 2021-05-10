@@ -30,31 +30,34 @@ def handler(event:, context:)
   users = UsersDb.new
   user = users.getByGoogleId(apiResults["user_id"])
 
-  authorizer = Authorizer.new(event["headers"])
-  sessionId = authorizer.getSessionId
-  if sessionId.nil?
-    _, sessionId, _ = Authorizer.createSession
-    originalSessionId, _ = Authorizer.parseSessionId(sessionId)
-  else
-    originalSessionId, expiredTime = Authorizer.parseSessionId(sessionId)
-
-    if expiredTime < Time.now.to_i
-      _, sessionId, _ = Authorizer.createSession
-      originalSessionId, _ = Authorizer.parseSessionId(sessionId)
-    end
-  end
-
   if user.nil?
+     _, sessionId, _ = Authorizer.createSession
+    baseSessionId, _ = Authorizer.parseSessionId(sessionId)
+
     users.create({
       GoogleId: apiResults["user_id"],
       Email: apiResults["email"],
-      SessionId: originalSessionId,
+      SessionId: baseSessionId,
       Capacity: "102400000",
     })
   else
-    users.update(apiResults["user_id"], {
-      SessionId: originalSessionId
-    })
+    authorizer = Authorizer.new(event["headers"])
+    sessionId = authorizer.getSessionId
+
+    if sessionId.nil?
+      sessionId = Authorizer.refreshSessionId(user["SessionId"])
+    else
+      _, expiredTime =  Authorizer.parseSessionId(sessionId)
+
+      if expiredTime < Time.now.to_i
+        _, sessionId, _ = Authorizer.createSession
+        baseSessionId, _ = Authorizer.parseSessionId(sessionId)
+        users.update(apiResults["user_id"], {
+          SessionId: baseSessionId
+        })
+      end
+
+    end
   end
 
   {
