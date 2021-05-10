@@ -1,0 +1,20 @@
+name: Test and deploy
+on: [push]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Select Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+      - name: Run npm install
+        run: cd front && npm install
+      - name: Check lint
+        run: cd front && npm run lint
+      - name: Run test
+        run: cd front && npm run test
