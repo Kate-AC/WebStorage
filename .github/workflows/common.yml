@@ -1,4 +1,4 @@
-name: Common check
+name: Common
 on: [push]
 jobs:
   check:
