@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/feature/add-github-action'
     steps:
+      - run: echo ${{ secrets.AWS_ACCESS_KEY_ID }}
       - name: Check out
         uses: actions/checkout@v2
       - name: Configure AWS Credentials
