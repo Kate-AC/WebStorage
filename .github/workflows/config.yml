@@ -20,6 +20,7 @@ jobs:
       - name: Run test
         run: cd front && npm run test
   deploy:
+    needs: common
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
