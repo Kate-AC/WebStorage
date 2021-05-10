@@ -2,6 +2,7 @@ name: Common check
 on: [push]
 jobs:
   common_check:
+    name: CommonCheck
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
