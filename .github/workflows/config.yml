@@ -6,8 +6,6 @@ jobs:
     env:
       NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
     steps:
-      - run: aws help
-      - run: hoge
       - name: Check out Node.js
         uses: actions/checkout@v2
       - name: Select Node.js
@@ -25,6 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/feature/add-github-action'
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: northeast-1
       - name: Check out Node.js
         uses: actions/checkout@v2
       - name: Select Node.js
