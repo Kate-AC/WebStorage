@@ -1,3 +1,4 @@
+import { test, expect } from '@jest/globals';
 import React from 'react';
 import Index from 'pages/index';
 import renderer from 'react-test-renderer';
@@ -7,4 +8,3 @@ test('basic', () => {
 
   expect(index).toMatchSnapshot();
 });
-

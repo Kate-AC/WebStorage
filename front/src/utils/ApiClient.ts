@@ -11,10 +11,10 @@ export function executeTest (): void {
     .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/test', {})
     .then((response) => {
       console.log(response);
-      console.log("OK");
+      console.log('OK');
     })
     .catch((response) => {
-      console.log("NG");
+      console.log('NG');
     });
 }
 

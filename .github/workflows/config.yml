@@ -1,0 +1,43 @@
+name: Test and deploy
+on: [push]
+jobs:
+  common:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - name: Select Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+      - name: Run npm install
+        run: cd front && npm install
+      - name: Check lint
+        run: cd front && npm run lint
+      - name: Run test
+        run: cd front && npm run test
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      - name: Check out Node.js
+        uses: actions/checkout@v2
+      - name: Select Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+      - name: Run npm install
+        run: cd front && npm install
+      - name: Start front deploy
+        run: cd front && npx serverless

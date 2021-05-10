@@ -1,8 +1,6 @@
 import React from 'react';
 import { Layout as DefaultLayout } from 'components/layouts/default/Layout';
 
-import { executeTest } from 'utils/ApiClient';
-
 export default function Login (): React.ReactElement {
   const googleLoginUrl =
     'https://accounts.google.com/o/oauth2/auth?' +
@@ -16,7 +14,7 @@ export default function Login (): React.ReactElement {
     <DefaultLayout>
       <div className="uk-child-width-1-2@s uk-padding" uk-grid>
         <div className="uk-dark uk-background-muted uk-padding">
-          <h3>Let's get started !</h3>
+          <h3>Let&apos;s get started !</h3>
           <p>
             Please login with google.
           </p>
