@@ -56,4 +56,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
       - name: Start backend deploy
-        run: cd infra && sh update-env.sh
+        run: cd infra && bash update-env.sh
