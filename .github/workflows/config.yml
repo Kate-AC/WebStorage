@@ -1,12 +1,5 @@
-name: Test_and_deploy
-
-on:
-  pull_request:
-    branches:
-      - master
-      - develop
-      - feature/**
-
+name: Test and deploy
+on: [push]
 jobs:
   install:
     runs-on: ubuntu-latest
