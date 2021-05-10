@@ -12,14 +12,12 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '15'
-      - run: cd front
-      - run: ls
-      - run: npm install
-      - run: ls
+      - name: Run npm install
+        run: cd front && npm install
       - name: Check lint
-        run: npm run lint
+        run: cd front && npm run lint
       - name: Run test
-        run: npm run test
+        run: cd front && npm run test
 
   deploy:
     runs-on: ubuntu
@@ -31,6 +29,5 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '15'
-      - run: cd front
       - name: Start front deploy
-        run: npx serverless
+        run: cd front && npx serverless
