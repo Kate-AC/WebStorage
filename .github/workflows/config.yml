@@ -6,7 +6,7 @@ jobs:
     env:
       NEXT_PUBLIC_BACKEND_URL: http://localhost:60100
     steps:
-      - name: Check out Node.js
+      - name: Check out
         uses: actions/checkout@v2
       - name: Select Node.js
         uses: actions/setup-node@v2
@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/feature/add-github-action'
     steps:
+      - name: Check out
+        uses: actions/checkout@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
