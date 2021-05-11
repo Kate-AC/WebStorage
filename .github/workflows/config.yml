@@ -32,8 +32,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
-      - name: Check out Node.js
-        uses: actions/checkout@v2
       - name: Select Node.js
         uses: actions/setup-node@v2
         with:
