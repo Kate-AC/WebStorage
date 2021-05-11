@@ -2,12 +2,14 @@
 
 funcs=("authorization" "show_files" "operate_files" "upload_file" "download_file" "login" "oauth_google_callback")
 
-rm -fR ./zip/*
+path=`pwd`
+
+rm -fR ${path}/zip/*
 
 for func in ${funcs[@]}; do
-  zip -j ./zip/${func}.zip ../backend/functions/*
+  zip -j ${path}/zip/${func}.zip ${path}/../backend/functions/*
   sleep 1
-  aws lambda update-function-code --function-name $func --zip-file fileb://./zip/${func}.zip --publish
+  aws lambda update-function-code --function-name $func --zip-file fileb://${path}/zip/${func}.zip --publish
   sleep 1
   aws lambda update-function-configuration --function-name $func --environment Variables={\
 BACKEND_URL="https://api.experiment-lab.link"\,\
