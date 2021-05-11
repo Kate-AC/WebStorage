@@ -3,8 +3,10 @@
 funcs=("authorization" "show_files" "operate_files" "upload_file" "download_file" "login" "oauth_google_callback")
 
 path=`pwd`
+echo $path
 
-rm -fR ${path}/zip/*
+rm -fR ${path}/zip
+mkdir ${path}/zip
 
 for func in ${funcs[@]}; do
   zip -j ${path}/zip/${func}.zip ${path}/../backend/functions/*
