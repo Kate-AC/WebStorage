@@ -32,10 +32,16 @@ class Authorizer
   def self.createSession()
     baseId = CGI::Session.new(CGI.new, { new_session: true }).session_id
     expiredTime = (Time.now + 3600 * 24 * 7).to_i
-    baseId = baseId + "=" + (expiredTime).to_s
+    baseId = baseId + "=" + expiredTime.to_s
     sessionId = Base64.encode64(baseId).gsub("==", "").gsub("\n", "")
 
     return env[:session_name], sessionId, expiredTime
+  end
+
+  def self.refreshSessionId(baseSessionId)
+    expiredTime = (Time.now + 3600 * 24 * 7).to_i
+    baseSessionId = baseSessionId + "=" + expiredTime.to_s
+    Base64.encode64(baseSessionId).gsub("==", "").gsub("\n", "")
   end
 
   def self.parseSessionId(sessionId)
