@@ -60,4 +60,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify
-        run: curl -X POST https://private.alice-catharsis.com/almighty_notifier -d "{\"title\": \"WebStorage deploy finished.\"}"
+        run: curl -X POST https://private.alice-catharsis.com/almighty_notifier
+          #-d "{\"title\": \"WebStorage deploy finished.\"}"
