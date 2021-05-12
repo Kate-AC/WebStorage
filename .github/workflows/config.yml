@@ -55,3 +55,9 @@ jobs:
           aws-region: ap-northeast-1
       - name: Start backend deploy
         run: cd infra && bash update-env.sh
+  finished:
+    needs: [deploy_front, deploy_backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify
+        run: curl -X POST https://private.alice-catharsis.com/almighty_notifier -d '{"title": "WebStorage deploy finished."}'
