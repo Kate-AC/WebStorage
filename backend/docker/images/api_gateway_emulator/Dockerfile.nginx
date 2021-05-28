@@ -7,7 +7,7 @@ RUN apk --update add \
   bash \
   && rm -rf /var/cache/apk/*
 
-WORK_DIR /api_gateway_emulator/scripts
+WORKDIR /api_gateway_emulator/scripts
 
 COPY ./docker/conf/api_gateway_emulator/nginx.conf /etc/nginx/nginx.conf
 

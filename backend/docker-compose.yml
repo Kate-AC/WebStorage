@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  api_gateway_emulator:
+  api_gateway_emulator_x:
     build:
       context: .
       dockerfile: ./docker/images/api_gateway_emulator/Dockerfile.nginx
