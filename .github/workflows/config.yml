@@ -18,7 +18,7 @@ jobs:
       - name: Check lint
         run: cd front && npm run lint
       - name: Run test
-        run: cd front && npm run test
+        run: cd front && npm run test -- -u
   deploy_front:
     needs: common
     runs-on: ubuntu-latest

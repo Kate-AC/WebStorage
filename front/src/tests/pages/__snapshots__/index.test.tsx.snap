@@ -76,9 +76,7 @@ exports[`basic 1`] = `
             onMouseUp={[Function]}
           />
           <div>
-            <a
-              onClick={[Function]}
-            />
+            <a />
           </div>
         </div>
       </div>
