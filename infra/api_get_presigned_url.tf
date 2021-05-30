@@ -2,7 +2,7 @@ module "get_presigned_url" {
   source           = "./api"
   controller       = "get_presigned_url"
   method           = "handler"
-  http_method      = "GET"
+  http_method      = "POST"
   role             = aws_iam_role.iam_for_lambda.arn
   env              = var.env
   policy           = aws_iam_role_policy_attachment.lambda_logs

@@ -3,6 +3,17 @@ require "users_db"
 require "env"
 
 def handler(event:, context:)
+  if "OPTIONS" == event["httpMethod"]
+    return {
+      statusCode: 200,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": env[:front_url],
+        "Access-Control-Allow-Credentials": true
+      }
+    }
+  end
+
   authorizer = Authorizer.new(event["headers"])
   sessionId = authorizer.getSessionId
 

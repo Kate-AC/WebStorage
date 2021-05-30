@@ -20,7 +20,14 @@ def handler(event:, context:)
   sessionId = authorizer.getSessionId
 
   if !authorizer.auth(sessionId)
-    return { statusCode: 400 }
+    return {
+      statusCode: 400,
+      body: "",
+      headers: {
+        "Access-Control-Allow-Origin": env[:front_url],
+        "Access-Control-Allow-Credentials": true
+      }
+    }
   end
 
   user = authorizer.getAuthorizedUser
