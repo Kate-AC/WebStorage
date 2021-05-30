@@ -102,11 +102,13 @@ export default function FileSet (props: Props): React.ReactElement {
     setSelected(true, file.FileKey, 'click');
   };
 
-  const doubleClickEvent = async () => {
+  const doubleClickEvent = () => {
     const a = aRef.current;
+console.log(base64Data);
+console.log(a);
 
     if (a === null) return;
-
+console.log(9999);
     a.href = base64Data;
     a.click();
   };
