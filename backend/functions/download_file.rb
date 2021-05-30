@@ -9,7 +9,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+        "Access-Control-Allow-Origin": env[:front_url],
         "Access-Control-Allow-Credentials": true,
         "Access-Control-Allow-Content-Type": "application/octet-stream",
         "Access-Control-Allow-Content-Disposition": "attachment;"
@@ -47,7 +47,7 @@ def handler(event:, context:)
     headers: {
       "Content-Type": "application/octet-stream",
       "Content-Disposition": "attachment;",
-      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+      "Access-Control-Allow-Origin": env[:front_url],
       "Access-Control-Allow-Credentials": true
     },
     body: presignedUrl

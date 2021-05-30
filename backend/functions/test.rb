@@ -11,7 +11,7 @@ def handler(event:, context:)
       body: "",
       headers: {
         "Access-Control-Allow-Methods": "OPTIONS,POST",
-        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+        "Access-Control-Allow-Origin": env[:front_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -22,7 +22,7 @@ def handler(event:, context:)
     body: "",
     headers: {
       "Access-Control-Allow-Methods": "OPTIONS,POST",
-      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+      "Access-Control-Allow-Origin": env[:front_url],
       "Access-Control-Allow-Credentials": true
     }
   }

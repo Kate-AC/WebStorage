@@ -11,6 +11,7 @@ def env
     dynamodb_endpoint: ENV["DYNAMODB_ENDPOINT"],
     login_to_redirect_url: ENV["LOGIN_TO_REDIRECT_URL"],
     backend_url: ENV["BACKEND_URL"],
+    front_url: ENV["FRONT_URL"],
     s3_url: ENV["S3_URL"]
   }
 end

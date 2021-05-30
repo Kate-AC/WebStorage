@@ -10,7 +10,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+        "Access-Control-Allow-Origin": env[:front_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -39,7 +39,7 @@ def handler(event:, context:)
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+      "Access-Control-Allow-Origin": env[:front_url],
       "Access-Control-Allow-Credentials": true
     },
     body: presignedUrl

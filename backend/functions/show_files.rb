@@ -13,7 +13,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+        "Access-Control-Allow-Origin": env[:front_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -27,7 +27,7 @@ def handler(event:, context:)
       statusCode: 400,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+        "Access-Control-Allow-Origin": env[:front_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -39,7 +39,7 @@ def handler(event:, context:)
     statusCode: 200,
     body: files["items"].to_json,
     headers: {
-      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
+      "Access-Control-Allow-Origin": env[:front_url],
       "Access-Control-Allow-Credentials": true
     }
   }

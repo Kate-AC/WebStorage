@@ -20,13 +20,13 @@ def handler(event:, context:)
   expiredTime = (Time.now + 3600 * 24 * 7).to_i
 p env[:login_to_redirect_url].gsub(/https?:\/\/(.+)\//, "\\1")
 
-  if env[:login_to_redirect_url].match("localhost").nil?
+  if env[:front_url].match("localhost").nil?
     return {
       statusCode: 302,
       isBase64Encoded: false,
       body: "login",
       headers: {
-        "Set-Cookie" => "#{sessionName}=#{sessionId};Path=\/;Expires=#{expiredTime};Domain=#{env[:login_to_redirect_url].gsub(/https?:\/\/(.+)\//, "\\1")};",
+        "Set-Cookie" => "#{sessionName}=#{sessionId};Path=\/;Expires=#{expiredTime};Domain=#{env[:front_url].gsub(/https?:\/\/(.+)\//, "\\1")};",
         "Location" => env[:login_to_redirect_url]
       }
     }
