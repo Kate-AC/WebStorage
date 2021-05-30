@@ -12,7 +12,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -61,7 +61,7 @@ def handler(event:, context:)
     statusCode: 200,
     body: uploadedFile.to_json,
     headers: {
-      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
       "Access-Control-Allow-Credentials": true
     }
   }

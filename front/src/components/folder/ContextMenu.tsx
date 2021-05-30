@@ -2,7 +2,7 @@ import React, { useRef, forwardRef } from 'react';
 import styled from 'styled-components';
 import { getContextMenuState } from 'contexts/ContextMenuContext';
 import { getFilesState } from 'contexts/FilesContext';
-import { executeOperateFiles } from 'utils/ApiClient';
+import { executeOperateFiles, executeGetPresignedUrl } from 'utils/ApiClient';
 
 const ContextMenuStyled = styled.div`
   position: absolute;
@@ -34,6 +34,7 @@ type Props = {};
 export function ContextMenu (props: Props): React.ReactElement {
   const { files, setFiles } = getFilesState();
   const operator = getContextMenuState();
+  const aRef: React.RefObject<HTMLAnchorElement> = useRef<HTMLAnchorElement>(null);
 
   const operateFile = async (order: string) => {
     operator.setVisible(false);
@@ -44,8 +45,26 @@ export function ContextMenu (props: Props): React.ReactElement {
     }
   };
 
+  const getPresignedUrl = async () => {
+    operator.setVisible(false);
+    const data = await executeGetPresignedUrl(operator.fileKeys[0]);
+    const a = aRef.current;
+
+    if (a === null) return;
+
+    a.href = data;
+    a.click();
+  };
+
+  const aTag = (
+    <a
+      ref={aRef}
+      onClick={ (e) => e.preventDefault() }
+    ></a>
+  );
+
   if (!operator.visible) {
-    return <></>;
+    return <>{ aTag }</>;
   }
 
   return (
@@ -57,8 +76,9 @@ export function ContextMenu (props: Props): React.ReactElement {
     >
       <ul>
         <li onClick={(e) => operateFile('delete')}>Delete</li>
-        <li>Rename</li>
+        <li onClick={(e) => getPresignedUrl()}>Download</li>
       </ul>
+      { aTag }
     </ContextMenuStyled>
   );
 }

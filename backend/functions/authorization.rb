@@ -1,5 +1,6 @@
 require "authorizer"
 require "users_db"
+require "env"
 
 def handler(event:, context:)
   authorizer = Authorizer.new(event["headers"])
@@ -10,7 +11,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
         "Access-Control-Allow-Credentials": true
       }
     }

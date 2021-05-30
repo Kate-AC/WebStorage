@@ -5,6 +5,7 @@ require "time"
 require 'dynamodb'
 require "files_db"
 require "authorizer"
+require "env"
 
 def handler(event:, context:)
   if "OPTIONS" == event["httpMethod"]
@@ -12,7 +13,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -26,7 +27,7 @@ def handler(event:, context:)
       statusCode: 400,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
         "Access-Control-Allow-Credentials": true
       }
     }
@@ -38,7 +39,7 @@ def handler(event:, context:)
     statusCode: 200,
     body: files["items"].to_json,
     headers: {
-      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
       "Access-Control-Allow-Credentials": true
     }
   }

@@ -81,6 +81,10 @@ services:
     <<: *lambda
     container_name: download_file
     command: download_file.handler
+  get_presigned_url:
+    <<: *lambda
+    container_name: get_presigned_url
+    command: get_presigned_url.handler
   show_files:
     <<: *lambda
     container_name: show_files

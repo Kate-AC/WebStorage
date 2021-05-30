@@ -105,6 +105,26 @@ export function executeDownloadFile (fileKey: string): Promise<string> {
   });
 }
 
+export function executeGetPresignedUrl (fileKey: string): Promise<string> {
+  axios.defaults.withCredentials = true;
+
+  return new Promise((resolve, reject) => {
+    axios
+      .post(process.env.NEXT_PUBLIC_BACKEND_URL + '/get_presigned_url', {
+        fileKey: fileKey,
+      })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((response) => {
+        alertStore.dispatch({
+          type: 'ERROR',
+          message: 'ERROR: File fetching failed.' + response.message,
+        });
+      });
+  });
+}
+
 export function executeOperateFiles (fileKeys: string[], order: string): Promise<string[]> {
   axios.defaults.withCredentials = true;
 

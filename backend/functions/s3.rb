@@ -1,5 +1,6 @@
 require "aws-sdk-s3"
 require "env"
+require "files_db"
 
 class S3
   def getCredentials
@@ -33,6 +34,14 @@ class S3
       endpoint: env[:s3_endpoint],
       force_path_style: true
     ).bucket(env[:s3_bucket_name])
+  end
+
+  def getObjectByKey(key)
+    Aws::S3::Object.new(
+      key: key,
+      bucket_name: env[:s3_bucket_name],
+      client: getClient
+    )
   end
 
   def existByKey?(key)
@@ -73,6 +82,14 @@ class S3
       key: key,
       expires_in: 300
     ).gsub!(env[:s3_endpoint], env[:s3_url])
+  end
+
+  def getPresignedUrl(params)
+    getObjectByKey(params[:fileKey]).presigned_url(
+      :get,
+      expires_in: 3600,
+      response_content_disposition: "attachment; filename=#{params[:fileName]}"
+    )
   end
 
   def putByKey(key, data)

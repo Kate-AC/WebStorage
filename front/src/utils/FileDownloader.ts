@@ -1,15 +1,15 @@
 import React from 'react';
-import { executeDownloadFile } from 'utils/ApiClient';
+import { executeGetPresignedUrl } from 'utils/ApiClient';
 
-export async function getBase64Data (fileKey: string) {
-  return await executeDownloadFile(fileKey);
+export async function getPresignedUrl (fileKey: string) {
+  return await executeGetPresignedUrl(fileKey);
 }
 
-export function dropOnDesktop (e: React.DragEvent<HTMLElement>, fileName: string, base64Data: string) {
+export function dropOnDesktop (e: React.DragEvent<HTMLElement>, fileName: string, presignedUrl: string) {
   e.dataTransfer.setData(
-    'DownloadUrl',
-    'applicatin/octet-stream:%s:data:image/jpeg;base64,%s'
+    'DownloadURL',
+    'text/plain:%s:%s'
       .replace('%s', fileName)
-      .replace('%s', base64Data),
+      .replace('%s', presignedUrl),
   );
 }

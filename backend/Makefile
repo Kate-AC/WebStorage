@@ -26,3 +26,7 @@ install:
 .PHONY: dynamo
 dynamo:
 	open http://localhost:60101/shell/
+
+.PHONY: ngrok
+ngrok:
+	ngrok http localhost:60102

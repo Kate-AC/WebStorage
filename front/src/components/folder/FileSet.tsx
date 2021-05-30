@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import FileIcon from 'components/folder/FileIcon';
-import { getBase64Data, dropOnDesktop } from 'utils/FileDownloader';
+import { getPresignedUrl, dropOnDesktop } from 'utils/FileDownloader';
 import { getContextMenuState } from 'contexts/ContextMenuContext';
 import { UploadedFile } from 'types/UploadedFile';
 
@@ -64,12 +64,10 @@ export default function FileSet (props: Props): React.ReactElement {
   const attributes = JSON.parse(file.Attributes);
 
   const mouseDownEvent = async () => {
-    setBase64Data(await getBase64Data(file.FileKey));
+    setBase64Data(await getPresignedUrl(file.FileKey));
   };
 
-  const mouseDragStartEvent = (e: React.DragEvent<HTMLDivElement>) => {
-    if (base64Data.length < 1) return;
-
+  const mouseDragStartEvent = async (e: React.DragEvent<HTMLDivElement>) => {
     dropOnDesktop(e, attributes.FileName, base64Data);
   };
 

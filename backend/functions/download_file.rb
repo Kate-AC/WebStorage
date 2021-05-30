@@ -1,6 +1,7 @@
 require 'json'
 require 's3'
 require "authorizer"
+require "env"
 
 def handler(event:, context:)
   if "OPTIONS" == event["httpMethod"]
@@ -8,7 +9,7 @@ def handler(event:, context:)
       statusCode: 200,
       body: "",
       headers: {
-        "Access-Control-Allow-Origin": "https://experiment-lab.link",
+        "Access-Control-Allow-Origin": env[:login_to_redirect_url],
         "Access-Control-Allow-Credentials": true,
         "Access-Control-Allow-Content-Type": "application/octet-stream",
         "Access-Control-Allow-Content-Disposition": "attachment;"
@@ -27,23 +28,29 @@ def handler(event:, context:)
   fileKey = body["fileKey"]
 
   s3 = S3.new
-  p fileKey
   unless s3.existByKey?(fileKey)
     return
   end
 
-  file = s3.getByKey(fileKey)
-  body = file.body.read
+  user = authorizer.getAuthorizedUser
+
+  file = FilesDb.new.getByUserIdAndFileKey(user["GoogleId"], fileKey)
+  attributes = JSON.parse(file["Attributes"])
+
+  presignedUrl = S3.new.getPresignedUrl({
+    fileKey: file["FileKey"],
+    fileName: attributes["FileName"]
+  })
 
   return {
     statusCode: 200,
     headers: {
-      "Content-Type" => "application/octet-stream",
-      "Content-Disposition" => "attachment;",
-      "Access-Control-Allow-Origin": "https://experiment-lab.link",
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": "attachment;",
+      "Access-Control-Allow-Origin": env[:login_to_redirect_url],
       "Access-Control-Allow-Credentials": true
     },
-    body: body
+    body: presignedUrl
   }
 end
 
