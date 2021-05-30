@@ -104,12 +104,11 @@ export default function FileSet (props: Props): React.ReactElement {
 
   const doubleClickEvent = () => {
     const a = aRef.current;
-    console.log(base64Data);
-    console.log(a);
 
     if (a === null) return;
-    console.log(9999);
+
     a.href = base64Data;
+    a.download = attributes.FileName;
     a.click();
   };
 
