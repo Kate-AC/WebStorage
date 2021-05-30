@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import FileIcon from 'components/folder/FileIcon';
 import { getPresignedUrl, dropOnDesktop } from 'utils/FileDownloader';
@@ -55,6 +55,7 @@ export default function FileSet (props: Props): React.ReactElement {
   const operator = getContextMenuState();
   const [randomNumber] = useState(Math.random());
   const { file, pressing, setSelected, isSelected, fileKeyList } = props;
+  const aRef: React.RefObject<HTMLAnchorElement> = useRef<HTMLAnchorElement>(null);
 
   // state反映の遅延が起こるため、変更を検知してからsetする
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function FileSet (props: Props): React.ReactElement {
   const attributes = JSON.parse(file.Attributes);
 
   const mouseDownEvent = async () => {
+    if (base64Data !== '') return;
     setBase64Data(await getPresignedUrl(file.FileKey));
   };
 
@@ -100,6 +102,16 @@ export default function FileSet (props: Props): React.ReactElement {
     setSelected(true, file.FileKey, 'click');
   };
 
+  const doubleClickEvent = async () => {
+    const a = aRef.current;
+    const data = await getPresignedUrl(file.FileKey);
+
+    if (a === null) return;
+
+    a.href = data;
+    a.click();
+  };
+
   return (
     <FileSetStyled>
       <div
@@ -115,10 +127,12 @@ export default function FileSet (props: Props): React.ReactElement {
           onMouseDown={mouseDownEvent}
           onMouseOver={dragFilesEvent}
           onDragStart={mouseDragStartEvent}
+          onDoubleClick={doubleClickEvent}
         ></div>
         <FileIcon fileName={attributes.FileName} />
         <div className="title">{attributes.FileName}</div>
       </div>
+      <a ref={aRef}></a>
     </FileSetStyled>
   );
 }
