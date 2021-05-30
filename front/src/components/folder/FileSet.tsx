@@ -104,11 +104,10 @@ export default function FileSet (props: Props): React.ReactElement {
 
   const doubleClickEvent = async () => {
     const a = aRef.current;
-    const data = await getPresignedUrl(file.FileKey);
 
     if (a === null) return;
 
-    a.href = data;
+    a.href = base64Data;
     a.click();
   };
 
