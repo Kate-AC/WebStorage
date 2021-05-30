@@ -39,7 +39,7 @@ endif
 
 .PHONY: test
 test:
-	docker-compose exec app npm run test
+	docker-compose exec app npm run test -- -u
 
 .PHONY: lint
 lint:
