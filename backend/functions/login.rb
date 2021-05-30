@@ -18,7 +18,6 @@ def handler(event:, context:)
   _, expiredTime = Authorizer.parseSessionId(sessionId)
 
   expiredTime = (Time.now + 3600 * 24 * 7).to_i
-p env[:login_to_redirect_url].gsub(/https?:\/\/(.+)\//, "\\1")
 
   if env[:front_url].match("localhost").nil?
     return {

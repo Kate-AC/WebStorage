@@ -42,6 +42,13 @@ def handler(event:, context:)
 
   uploadedFile = {}
   if body["terminus"]
+    file = s3.getByKey(fileKey)
+
+    s3.putByKey(
+      fileKey,
+      Base64.decode64(file.body.read)
+    )
+
     googleId = authorizer.getAuthorizedUser["GoogleId"]
 
     FilesDb.new.create({

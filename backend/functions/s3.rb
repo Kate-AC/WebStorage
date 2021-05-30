@@ -88,7 +88,7 @@ class S3
     getObjectByKey(params[:fileKey]).presigned_url(
       :get,
       expires_in: 3600,
-      response_content_disposition: "attachment; filename=#{params[:fileName]}"
+      response_content_disposition: "attachment; filename=#{params[:fileName]};"
     )
   end
 

@@ -57,10 +57,7 @@ export function ContextMenu (props: Props): React.ReactElement {
   };
 
   const aTag = (
-    <a
-      ref={aRef}
-      onClick={ (e) => e.preventDefault() }
-    ></a>
+    <a ref={aRef}></a>
   );
 
   if (!operator.visible) {
